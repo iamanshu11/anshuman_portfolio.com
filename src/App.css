@@ -1,0 +1,16 @@
+body,
+.custom-cursor {
+  cursor: none;
+}
+
+/* Circle cursor */
+.cursor-dot {
+  position: fixed;
+  z-index: 9999;
+  width: 20px;
+  height: 20px;
+  border: 2px solid white;
+  border-radius: 50%;
+  pointer-events: none;
+  transition: transform 0.1s ease;
+}

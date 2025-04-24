@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+body {
+  cursor: none;
+}
+
+.cursor-circle {
+  position: fixed;
+  width: 30px;
+  height: 30px;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+}
+
+.rotate-container {
+  perspective: 1000px;
+  transform-style: preserve-3d;
+  transition: transform 0.1s ease-out;
+}
