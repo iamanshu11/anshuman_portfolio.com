@@ -1,15 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
-
-// Import images
 import ProA1 from '../assets/pro-a-1.png';
 import ProA2 from '../assets/pro-a-2.png';
 import ProA3 from '../assets/pro-a-3.png';
+import ProA4 from '../assets/pro-a-4.png';
+import ProA5 from '../assets/pro-a-5.png';
+import ProA6 from '../assets/pro-a-6.png';
 import ProB1 from '../assets/pro-b-1.png';
 import ProB2 from '../assets/pro-b-2.png';
+import ProB3 from '../assets/pro-b-3.png';
+import ProB4 from '../assets/pro-b-4.png';
+import ProB5 from '../assets/pro-b-5.png';
+import ProB6 from '../assets/pro-b-6.png';
 
 const Project = () => {
+  const [selectedImage, setSelectedImage] = useState(null);
+
   const projects = [
     {
       id: 1,
@@ -25,18 +31,8 @@ const Project = () => {
         "Admin dashboard for managing the system",
         "Medicine database with detailed information"
       ],
-      technologies: [
-        { name: "React" },
-        { name: "Tailwind CSS" },
-        { name: "Framer Motion" },
-        { name: "Node.js" },
-        { name: "MongoDB" }
-      ],
-      images: [
-        { src: ProA1, alt: "Chat Interface" },
-        { src: ProA2, alt: "Medicine Search" },
-        { src: ProA3, alt: "Appointment Booking" }
-      ],
+      technologies: ["React", "Tailwind CSS", "Framer Motion", "Node.js", "MongoDB"],
+      images: [ProA1, ProA2, ProA3, ProA4, ProA5, ProA6],
       githubLink: "https://github.com/yourusername/pharmacy-chatbot",
       liveLink: "https://pharmacy-chatbot-demo.com"
     },
@@ -54,21 +50,20 @@ const Project = () => {
         "User authentication",
         "Admin dashboard"
       ],
-      technologies: [
-        { name: "React" },
-        { name: "Node.js" },
-        { name: "Express" },
-        { name: "MongoDB" },
-        { name: "Stripe" }
-      ],
-      images: [
-        { src: ProB1, alt: "Home Page" },
-        { src: ProB2, alt: "Product Page" },
-      ],
+      technologies: ["React", "Node.js", "Express", "MongoDB", "Stripe"],
+      images: [ProB1, ProB2, ProB3, ProB4, ProB5, ProB6],
       githubLink: "https://github.com/yourusername/ecommerce-platform",
       liveLink: "https://ecommerce-demo.com"
     }
   ];
+
+  const openImageModal = (image) => {
+    setSelectedImage(image);
+  };
+
+  const closeModal = () => {
+    setSelectedImage(null);
+  };
 
   return (
     <div className="min-h-screen bg-[#0c031c] py-20 px-6">
@@ -97,16 +92,33 @@ const Project = () => {
               <div className="flex flex-col md:flex-row gap-8">
                 {/* Images */}
                 <div className="md:w-1/2">
-                  <div className="relative h-[400px] rounded-xl overflow-hidden">
-                    <img src={project.images[0].src} alt={project.images[0].alt} className="w-full h-full object-cover" />
+                  <div className="relative h-[400px] rounded-xl overflow-hidden mb-4">
+                    <img src={project.images[0]} alt="Preview" className="w-full h-full object-cover" />
                   </div>
-                  <div className="grid grid-cols-2 gap-4 mt-4">
+
+                  <div
+                    className="flex gap-4 overflow-x-auto"
+                    style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                  >
                     {project.images.slice(1).map((image, idx) => (
-                      <div key={idx} className="relative h-[200px] rounded-xl overflow-hidden">
-                        <img src={image.src} alt={image.alt} className="w-full h-full object-cover" />
-                      </div>
+                      <motion.div
+                        whileHover={{ scale: 1.05 }}
+                        key={idx}
+                        className="min-w-[150px] h-[150px] rounded-xl overflow-hidden cursor-pointer flex-shrink-0"
+                        onClick={() => openImageModal(image)}
+                      >
+                        <img src={image} alt={`Preview ${idx}`} className="w-full h-full object-cover" />
+                      </motion.div>
                     ))}
                   </div>
+                  {/* Hide scrollbar (Chrome, Safari) */}
+                  <style>
+                    {`
+                      div::-webkit-scrollbar {
+                        display: none;
+                      }
+                    `}
+                  </style>
                 </div>
 
                 {/* Details */}
@@ -138,7 +150,7 @@ const Project = () => {
                       <div className="flex flex-wrap gap-2">
                         {project.technologies.map((tech, idx) => (
                           <span key={idx} className="px-3 py-1 bg-white/5 rounded-full text-gray-300">
-                            {tech.name}
+                            {tech}
                           </span>
                         ))}
                       </div>
@@ -169,6 +181,21 @@ const Project = () => {
             </div>
           </motion.div>
         ))}
+
+        {/* Image Modal */}
+        {selectedImage && (
+          <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center">
+            <div className="relative">
+              <img src={selectedImage} alt="Zoomed" className="max-w-full max-h-[90vh] rounded-xl" />
+              <button
+                onClick={closeModal}
+                className="absolute top-2 right-2 bg-white text-black rounded-full w-8 h-8 flex items-center justify-center"
+              >
+                &times;
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
